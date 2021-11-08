@@ -1,0 +1,13 @@
+.messageText{
+    background-color: slategrey;
+    border:none;
+    border-bottom: 2px solid black;
+    margin-right: 25px;
+}
+
+.btnSubmit{
+    background-color: peachpuff;
+    padding: 7px;
+    border: 2px solid peru;
+    border-radius: 10px;
+}
