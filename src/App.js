@@ -1,42 +1,100 @@
-import './App.css';
-import { useCallback, useEffect, useState } from 'react';
-import { MessageList } from './components/MessageList/MessageList';
-import { Form }  from './components/Form/Form';
+import React, { useState, useCallback } from 'react';
+import { BrowserRouter, Link, Routes, Route } from 'react-router-dom';
+import { Home } from './components/Home/Home';
+import Chats from './components/Chats/Chats';
+import { Profile } from './components/Profile/Profile';
 import { ChatList } from './components/ChatList/ChatList';
 import { AUTHORS } from './utils/constants';
 
 
+const initialChatList = [
+  {
+    name: 'Friends',
+    id: 'Friends',
+  },
+  {
+    name: 'Family',
+    id: 'Family',
+  },
+  {
+    name: 'GB',
+    id: 'GB',
+  }
+];
 
-function App() {
-  const [messages, setMessages] = useState([{text: 'text1', author: AUTHORS.user, id: `${Date.now()}`}])
-  const [chats, setChats] = useState([{name: 'Friends', id: 1}, {name: 'Family', id:  2}, {name: 'GeekBrains', id:  3},
-  {name: 'ReactGroup', id:  4}])
+const initialMessages = {
+  Friends: [
+    {
+      text: "Hello!",
+      author: AUTHORS.user,
+      id: 1,
+    },
+  ],
+  Family: [
+    {
+      text: "my family",
+      author: AUTHORS.user,
+      id: 2,
+    },
+  ],
+  GB: [
+    {
+      text: "GeekBrains",
+      author: AUTHORS.user,
+      id: 3,
+     },
+  ],
+};
 
-  const handleSendMessage = useCallback((newMessage) =>{
-    setMessages(prevMessages =>[...prevMessages, newMessage])
+export const App = () =>{
+  const [chatList, setChatList] = useState(initialChatList);
+  const [messages, setMessages] = useState(initialMessages);
+
+  const handleAddChat = useCallback((name) => {
+    const newId = `chat${Date.now()}`;
+
+    setChatList((prevChatList) => [...prevChatList, { name, id: newId }]);
+    setMessages((prevMessages) => ({
+      ...prevMessages,
+      [newId]: [],
+    }));
   }, []);
 
-  useEffect(() =>{
-    if(messages.length && messages[messages.length - 1].author !=='robot'){
-      const timeout = setTimeout( () =>
-      handleSendMessage({author:AUTHORS.robot, text: 'Hello! Glad to see you!', id: `${Date.now()}`})
-      , 1500)
+  const handleDeleteChat = useCallback((idToDelete) => {
+    setChatList((prevChatList) =>
+      prevChatList.filter(({ id }) => id !== idToDelete)
+    );
+    setMessages((prevMessages) => {
+      const newMessages = { ...prevMessages };
+      delete newMessages[idToDelete];
 
-      return () => clearTimeout(timeout)
-    }
-  },[messages]);
+      return newMessages;
+    });
+  }, []);
 
-  return (
-    <div className="App">
-        <div className="chatsList" >
-        <ChatList chats={chats}/>
-        </div>
-        <div className="chat">
-        <MessageList messages={messages}/>
-        <Form onSendMessage={handleSendMessage}/>
-        </div>
-    </div>
-  );
-}
+return(
+  <BrowserRouter>
+    <ul>
+      <li>
+        <Link to="/">Home</Link>
+      </li>
+      <li>
+        <Link to="/profile">Profile</Link>
+      </li>
+      <li>
+        <Link to="/chats">Chats</Link>
+      </li>
+    </ul>
 
-export default App;
+    <Routes>
+      <Route path="/" element={ <Home />} />
+      <Route path="profile" element={ <Profile /> } />
+      <Route path="chats" >
+        <Route index element={ <ChatList onAddChat={ handleAddChat } onDeleteChat={ handleDeleteChat } chatList={ chatList } />} />
+        <Route path=":chatId" element={ <Chats chatList={ chatList } messages= { messages } setMessages= { setMessages } onAddChat= {handleAddChat} onDeleteChat={ handleDeleteChat } />} />
+      </Route>
+      <Route path="*" element={<h3>404</h3>} />
+    </Routes>
+  </BrowserRouter>
+)
+};
