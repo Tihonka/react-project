@@ -1,0 +1,22 @@
+.App {
+    text-align: center;
+    background-color: slategray;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .chat{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chatsList{
+    height: 691px;
+    margin-top: 15px;
+  }
+  
