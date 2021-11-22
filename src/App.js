@@ -5,6 +5,8 @@ import Chats from './components/Chats/Chats';
 import { Profile } from './components/Profile/Profile';
 import { ChatList } from './components/ChatList/ChatList';
 import { AUTHORS } from './utils/constants';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 
 const initialChatList = [
@@ -73,6 +75,7 @@ export const App = () =>{
   }, []);
 
 return(
+  <Provider store = { store }>
   <BrowserRouter>
     <ul>
       <li>
@@ -96,5 +99,6 @@ return(
       <Route path="*" element={<h3>404</h3>} />
     </Routes>
   </BrowserRouter>
+  </Provider>
 )
 };
