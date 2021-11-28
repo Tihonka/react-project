@@ -6,15 +6,17 @@ import { Form }  from '../Form/Form';
 import { ChatList } from '../ChatList/ChatList';
 import { AUTHORS } from '../../utils/constants';
 import './Chats.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectMessages } from '../../store/messages/selectors';
+import { addMessage } from '../../store/messages/actions';
 
-function Chats({ chatList, messages, setMessages, onDeleteChat, onAddChat }) {
+function Chats() {
   const { chatId } = useParams();
+  const messages = useSelector(selectMessages);
+  const dispatch = useDispatch();
 
   const handleSendMessage = useCallback((newMessage) =>{
-    setMessages(prevMessages => ({
-        ...prevMessages,
-        [chatId]: [...prevMessages[chatId], newMessage],
-      }));
+      dispatch(addMessage(chatId, newMessage));
     },
     [chatId]
   );
@@ -38,7 +40,7 @@ function Chats({ chatList, messages, setMessages, onDeleteChat, onAddChat }) {
   return (
     <div className="App">
         <div className="chatsList" >
-        <ChatList chatList={ chatList } onAddChat= { onAddChat } onDeleteChat={ onDeleteChat } />
+        <ChatList />
         </div>
         <div className="chat">
         <MessageList messages={messages[chatId]}/>
