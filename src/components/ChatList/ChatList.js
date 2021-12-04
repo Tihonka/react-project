@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import { NavLink } from 'react-router-dom';
 import './ChatList.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { selectChat } from '../../store/chats/selectors';
+import { addChat } from '../../store/chats/actions';
+import { ChatItem } from '../ChatItem/chatItem';
 
-export const ChatList = ({ chatList, onAddChat, onDeleteChat }) => {
+export const ChatList = () => {
+  const chatList = useSelector(selectChat);
+  const dispatch = useDispatch();
   const [value, setValue] = useState('');
 
   const handleChange = (e) => {
@@ -15,21 +18,18 @@ export const ChatList = ({ chatList, onAddChat, onDeleteChat }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const newId = `chat${Date.now()}`;
+    dispatch(addChat({name: value, id: newId}));
+
     setValue('');
-    onAddChat(value);
   };
 
-  return (
+    return (
     <List>
       { chatList.map(chat => (
-          <ListItem disablePadding key={chat.id}>
-      <ListItemButton>
-            <NavLink  style={({ isActive }) => ({ color: isActive ? "red" : "blue" })}
-             to={`/chats/${chat.id}`}>
-              <ListItemText primary={chat.name} />
-            </NavLink>
-      </ListItemButton>
-      <button className="button" onClick={ ()=> onDeleteChat(chat.id) }>X</button>
+          <ListItem disablePadding key={chat.id} chat={ chat }>
+          <ChatItem chat={chat}/>
           </ListItem>
             ))}
      <form onSubmit={ handleSubmit }>
