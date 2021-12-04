@@ -4,6 +4,7 @@ import { Home } from './components/Home/Home';
 import Chats from './components/Chats/Chats';
 import { Profile } from './components/Profile/Profile';
 import { ChatList } from './components/ChatList/ChatList';
+import { Quotes } from './components/Quotes/quotes';
 
 export const App = () =>{
   return(
@@ -16,6 +17,9 @@ export const App = () =>{
           <Link to="/profile">Profile</Link>
         </li>
         <li>
+          <Link to="/quotes">Quotes</Link>
+        </li>
+        <li>
           <Link to="/chats">Chats</Link>
         </li>
       </ul>
@@ -23,6 +27,7 @@ export const App = () =>{
       <Routes>
         <Route path="/" element={ <Home />} />
         <Route path="profile" element={ <Profile /> } />
+        <Route path="quotes" element={ <Quotes /> } />
         <Route path="chats" >
           <Route index element={ <ChatList />} />
           <Route path=":chatId" element={ <Chats />} />
