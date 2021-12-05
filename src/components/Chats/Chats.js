@@ -7,7 +7,7 @@ import { ChatList } from '../ChatList/ChatList';
 import './Chats.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMessages } from '../../store/messages/selectors';
-import { addMessage, addMessageWithReply } from '../../store/messages/actions';
+import { addMessageWithReply } from '../../store/messages/actions';
 
 function Chats() {
   const { chatId } = useParams();

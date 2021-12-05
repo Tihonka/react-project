@@ -5,11 +5,11 @@ import { deleteMessage } from '../../store/messages/actions';
 import './Message.css'
 
 export const Message = ({ message }) => {
-    const chatId = useParams();
+    const { chatId } = useParams();
     const dispatch = useDispatch();
 
     const onDeleteMessage = useCallback((idToDelete) =>{
-        dispatch(deleteMessage(chatId, idToDelete));
+        dispatch(deleteMessage(...chatId, idToDelete));
       },
       [chatId]
     );
