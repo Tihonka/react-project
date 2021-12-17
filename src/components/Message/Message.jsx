@@ -9,7 +9,7 @@ export const Message = ({ message }) => {
     const dispatch = useDispatch();
 
     const onDeleteMessage = useCallback((idToDelete) =>{
-        dispatch(deleteMessage(...chatId, idToDelete));
+        dispatch(deleteMessage(chatId, idToDelete));
       },
       [chatId]
     );

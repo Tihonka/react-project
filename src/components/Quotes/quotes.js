@@ -19,15 +19,21 @@ useEffect( ()=>{
    requestQuotes();
 },[])
 
-return <><h3>Inspirational quotes</h3>
+return <>
+<h3>Inspirational quotes</h3>
+
 {isLoading ? <CircularProgress /> : <>
+
   <button onClick={requestQuotes}>Request</button>
+
   {!!error && <h4>ERROR: {error}</h4>}
+
   <ul>
       {quotes.map((quote) => (
-          <li key={quote._id}>{quote.quoteText}</li>
+          <li key= { quote._id }>{ quote.quoteText }</li>
       ))}
   </ul>
+  
 </>}
 </>
 };

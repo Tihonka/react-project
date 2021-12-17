@@ -1,26 +1,23 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { Navigate } from 'react-router';
+import { push } from 'firebase/database';
 import { MessageList } from '../MessageList/MessageList';
 import { Form }  from '../Form/Form';
 import { ChatList } from '../ChatList/ChatList';
+import { getChatMesListRefById } from '../../services/firebase';
 import './Chats.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectMessages } from '../../store/messages/selectors';
-import { addMessageWithReply } from '../../store/messages/actions';
 
-function Chats() {
+function Chats({ mes }) {
   const { chatId } = useParams();
-  const messages = useSelector(selectMessages);
-  const dispatch = useDispatch();
 
   const handleSendMessage = useCallback((newMessage) =>{
-      dispatch(addMessageWithReply(chatId, newMessage));
+      push(getChatMesListRefById(chatId), newMessage);
     },
     [chatId]
   );
 
-  if (!messages[chatId]) {
+  if (!mes[chatId]) {
     return <Navigate replace to="/chats" />;
   }
 
@@ -30,7 +27,7 @@ function Chats() {
         <ChatList />
         </div>
         <div className="chat">
-        <MessageList messages={messages[chatId]}/>
+        <MessageList messages={mes[chatId]}/>
         <Form onSendMessage={handleSendMessage}/>
         </div>
     </div>
