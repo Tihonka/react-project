@@ -5,14 +5,14 @@ export const REQUEST_QUOTES_FAILURE = "QUOTES::REQUEST_FAILURE";
 export const REQUEST_QUOTES_SUCCESS = "QUOTES::REQUEST_SUCCESS";
 
 export  const getQuotesLoading = () => ({
-  type:REQUEST_QUOTES_LOADING
+  type: REQUEST_QUOTES_LOADING
 });
 export  const getQuotesSuccess = (quotes) => ({
-  type:REQUEST_QUOTES_SUCCESS,
+  type: REQUEST_QUOTES_SUCCESS,
   payload: quotes
   });
 export  const getQuotesFailure = (err) => ({
-    type:REQUEST_QUOTES_FAILURE,
+    type: REQUEST_QUOTES_FAILURE,
     payload:err
 });
 
@@ -29,7 +29,7 @@ export const getQuotes = () => async (dispatch) => {
         dispatch(getQuotesSuccess(result.data));
     }
       catch(err) {
-      console.warn(err);
+      // console.warn(err);
       dispatch(getQuotesFailure(err.message));
       }
 };
